@@ -10,7 +10,7 @@ select `degrees`.name,`departments`.name as "name_of_department"
 from `degrees`
 inner join `departments`
 on `degrees`.department_id = `departments`.id
-where `departments`.name = "Dipartimento di Neuroscienze"
+where `departments`.name = "Dipartimento di Neuroscienze" and `degrees`.level= "Magistrale"
 -- 3. Selezionare tutti i corsi in cui insegna Fulvio Amato (id=44)
 from `teachers`
 inner join `course_teacher`
@@ -21,7 +21,35 @@ where `teachers`.id = 44
 
 -- 4. Selezionare tutti gli studenti con i dati relativi al corso di laurea a cui sono iscritti e il
 -- relativo dipartimento, in ordine alfabetico per cognome e nome
+select `students`.surname,`students`.name, `degrees`.name, `departments`.name
+from `students`
+inner join `degrees`
+on `students`.degree_id = `degrees`.id
+inner join `departments`
+on `degrees`.department_id = `departments`.id
 
+-- Selezionare tutti i corsi di laurea con i relativi corsi e insegnanti
+
+select `degrees`.name, `courses`.name,`teachers`.*
+from `degrees`
+inner join `courses`
+on `degrees`.id = `courses`.degree_id
+inner join `course_teacher`
+on `courses`.id = `course_teacher`.course_id
+inner join `teachers`
+on `course_teacher`.teacher_id = `teachers`.id
+-- 6. Selezionare tutti i docenti che insegnano nel Dipartimento di Matematica (54)
+select `teachers`.name,`teachers`.surname,`teachers`.email
+from `departments`
+inner join`degrees`
+on `departments`.id = `degrees`.department_id
+inner join `courses`
+on `degrees`.id = `courses`.degree_id
+inner join `course_teacher`
+on `courses`.id = `course_teacher`.course_id
+inner join `teachers`
+on `course_teacher`.teacher_id = `teachers`.id
+where `departments`.name = "Dipartimento di Matematica"
 
 
 
