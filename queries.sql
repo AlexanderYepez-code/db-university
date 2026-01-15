@@ -14,6 +14,10 @@ ORDER BY `date_of_birth` DESC;
 select COUNT(*)
 from `students`;
 WHERE YEAR(NOW()) - YEAR(`date_of_birth`) < 30;
+
+-- correzione
+SELECT *,  TIMESTAMPDIFF(YEAR, `date_of_birth`,CURDATE()) AS `age`
+FROM `students`
 -- Selezionare tutti i corsi del primo semestre del primo anno di un qualsiasi corso di laurea (286)
 SELECT *
 FROM `courses`
@@ -29,9 +33,25 @@ SELECT *
 FROM `degrees`
 WHERE `level` ="magistrale"
 -- Da quanti dipartimenti è composta l'università? (12)
-SELECT *
+SELECT COUNT(*)
 FROM `departments`
 -- Quanti sono gli insegnanti che non hanno un numero di telefono? (50)
 SELECT COUNT(*)
 FROM `teachers`
 WHERE `phone` IS NULL
+
+-- BONUS
+SELECT YEAR(`enrolment_date`), COUNT(`id`)
+FROM `students`
+group by(`enrolment_date`)
+
+
+SELECT `office_address`,COUNT(`id`)
+FROM `teachers`
+WHERE `phone` IS NULL
+group by `office_address`
+
+SELECT `department_id`, COUNT(*) AS `degrees_number`
+FROM `degrees`
+GROUP BY `department_id`
+HAVING `degrees_number` < 5
